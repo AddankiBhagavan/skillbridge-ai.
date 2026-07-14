@@ -9,12 +9,15 @@ import {
   X,
   Check,
   Brain,
+  AlertCircle,
 } from 'lucide-react';
 import type { PageName, StudentProfile } from '../types';
 import { Reveal } from '../components/Reveal';
 import { Card } from '../components/Card';
 import { Badge } from '../components/Badge';
 import { defaultProfile } from '../data/mockData';
+import { generateCareerAnalysis } from '../services/gemini';
+import { setAnalysisResult } from '../store/analysisStore';
 
 interface ProfilePageProps {
   navigate: (page: PageName) => void;
@@ -62,6 +65,7 @@ export function ProfilePage({ navigate }: ProfilePageProps) {
   const [skillInput, setSkillInput] = useState('');
   const [interestInput, setInterestInput] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const addSkill = (skill: string) => {
     const trimmed = skill.trim();
@@ -87,13 +91,24 @@ export function ProfilePage({ navigate }: ProfilePageProps) {
     setProfile({ ...profile, interests: profile.interests.filter((i) => i !== interest) });
   };
 
-  // Simulate AI analysis with a loading state, then navigate to results
-  const handleAnalyze = () => {
+  // Call Gemini API with the student profile, then navigate to results
+  const handleAnalyze = async () => {
     setAnalyzing(true);
-    setTimeout(() => {
-      setAnalyzing(false);
+    setError(null);
+    try {
+      const result = await generateCareerAnalysis({
+        name: profile.fullName,
+        education: profile.educationLevel,
+        currentSkills: profile.currentSkills,
+        interests: profile.interests,
+        careerGoal: profile.careerGoal,
+      });
+      setAnalysisResult(result);
       navigate('analysis');
-    }, 2200);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'AI analysis failed. Please try again.');
+      setAnalyzing(false);
+    }
   };
 
   return (
@@ -283,25 +298,36 @@ export function ProfilePage({ navigate }: ProfilePageProps) {
                     <Brain className="w-7 h-7 text-primary-500 absolute inset-0 m-auto animate-pulse" />
                   </div>
                   <div>
-                    <p className="font-semibold text-ink-800 text-center">AI is analyzing your profile...</p>
+                    <p className="font-semibold text-ink-800 text-center">Analyzing your profile with AI...</p>
                     <p className="text-sm text-ink-500 text-center mt-1">
                       Matching skills, evaluating gaps, and building your roadmap
                     </p>
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-2 text-sm text-ink-500">
-                    <Check className="w-4 h-4 text-primary-500" />
-                    Your data is processed locally — nothing is stored.
+                <div>
+                  {error && (
+                    <div className="mb-4 p-4 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3 animate-fade-in">
+                      <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-semibold text-red-700">Something went wrong</p>
+                        <p className="text-sm text-red-600 mt-0.5">{error}</p>
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-2 text-sm text-ink-500">
+                      <Check className="w-4 h-4 text-primary-500" />
+                      Your data is processed locally — nothing is stored.
+                    </div>
+                    <button
+                      onClick={handleAnalyze}
+                      className="btn-primary w-full sm:w-auto"
+                    >
+                      Analyze with AI
+                      <ArrowRight className="w-5 h-5" />
+                    </button>
                   </div>
-                  <button
-                    onClick={handleAnalyze}
-                    className="btn-primary w-full sm:w-auto"
-                  >
-                    Analyze with AI
-                    <ArrowRight className="w-5 h-5" />
-                  </button>
                 </div>
               )}
             </div>

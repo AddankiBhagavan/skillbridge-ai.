@@ -1,9 +1,9 @@
 import type {
-  CareerAnalysis,
   DashboardData,
   Roadmap,
   StudentProfile,
 } from '../types';
+import type { CareerAnalysisResult } from '../types/analysis';
 
 // Default student profile used across pages
 export const defaultProfile: StudentProfile = {
@@ -15,12 +15,32 @@ export const defaultProfile: StudentProfile = {
 };
 
 // Mock AI-generated career analysis
-export const careerAnalysis: CareerAnalysis = {
-  recommendedPath: 'Full-Stack Software Engineer',
-  matchScore: 87,
-  summary:
-    'Based on your strong foundation in JavaScript and problem-solving, combined with your interest in web development and EdTech, a Full-Stack Software Engineer role is an excellent fit. The industry demand is high and growing, and your current skill set covers 62% of required competencies. Closing the gap in backend technologies and cloud deployment will make you job-ready within 6 months.',
-  skillGaps: [
+// Fallback career analysis matching the CareerAnalysisResult type (used when no AI result is available)
+export const careerAnalysis: CareerAnalysisResult = {
+  careerPaths: [
+    {
+      title: 'Full-Stack Software Engineer',
+      matchScore: 87,
+      description: 'Builds end-to-end web applications using frontend and backend technologies. High demand across startups and enterprises.',
+      demandLevel: 'High',
+      averageSalary: '$75K – $130K entry-level',
+    },
+    {
+      title: 'Frontend Developer',
+      matchScore: 82,
+      description: 'Specializes in building user interfaces with modern frameworks like React. Great entry point for new developers.',
+      demandLevel: 'High',
+      averageSalary: '$60K – $110K entry-level',
+    },
+    {
+      title: 'Backend Developer',
+      matchScore: 74,
+      description: 'Focuses on server-side logic, APIs, and database architecture. Critical for any web application.',
+      demandLevel: 'Growing',
+      averageSalary: '$70K – $120K entry-level',
+    },
+  ],
+  skillGapAnalysis: [
     { skill: 'React / Frontend Frameworks', currentLevel: 35, requiredLevel: 85, gap: 50, priority: 'High' },
     { skill: 'Node.js / Express', currentLevel: 15, requiredLevel: 80, gap: 65, priority: 'High' },
     { skill: 'Database Design (SQL)', currentLevel: 20, requiredLevel: 75, gap: 55, priority: 'High' },
@@ -30,89 +50,91 @@ export const careerAnalysis: CareerAnalysis = {
     { skill: 'Testing (Jest)', currentLevel: 0, requiredLevel: 55, gap: 55, priority: 'Low' },
     { skill: 'DevOps Basics (CI/CD)', currentLevel: 0, requiredLevel: 50, gap: 50, priority: 'Low' },
   ],
-  missingSkills: [
-    'React',
-    'Node.js',
-    'Express',
-    'PostgreSQL',
-    'AWS Cloud',
-    'TypeScript',
-    'System Design',
-    'Jest Testing',
-    'Docker',
-    'CI/CD Pipelines',
-  ],
-  strengths: [
-    { skill: 'JavaScript', level: 70, description: 'Solid grasp of ES6+ syntax and DOM manipulation' },
-    { skill: 'Problem Solving', level: 80, description: 'Strong analytical thinking from competitive programming' },
-    { skill: 'Git & Version Control', level: 65, description: 'Comfortable with branching, merging, and collaborative workflows' },
-    { skill: 'HTML & CSS', level: 75, description: 'Semantic markup and responsive layout proficiency' },
-  ],
-  industryDemand: 92,
-  industryTrend: 'Growing',
-  averageSalary: '$75K – $130K entry-level (global remote)',
-  resources: [
+  roadmap30Days: [
     {
-      title: 'The Modern React Bootcamp',
+      title: 'React Fundamentals',
+      skills: ['JSX', 'Components', 'Props', 'useState'],
+      milestones: ['Build a todo app', 'Understand component lifecycle', 'Learn hooks'],
+    },
+    {
+      title: 'Advanced React',
+      skills: ['useEffect', 'Context API', 'React Router', 'Custom Hooks'],
+      milestones: ['Build a multi-page app', 'Implement global state', 'Add routing'],
+    },
+    {
+      title: 'TypeScript Basics',
+      skills: ['Types', 'Interfaces', 'Generics'],
+      milestones: ['Type a React app', 'Create typed API calls'],
+    },
+    {
+      title: 'Node.js Introduction',
+      skills: ['Express', 'REST APIs', 'Middleware'],
+      milestones: ['Build a CRUD API', 'Add error handling'],
+    },
+  ],
+  roadmap90Days: [
+    {
+      title: 'Frontend Mastery',
+      skills: ['React', 'TypeScript', 'Tailwind CSS', 'Testing'],
+      milestones: ['Build a portfolio site', 'Write unit tests with Jest', 'Deploy to Vercel'],
+    },
+    {
+      title: 'Backend Development',
+      skills: ['Node.js', 'Express', 'PostgreSQL', 'JWT Auth'],
+      milestones: ['Build a REST API with auth', 'Design a database schema', 'Add rate limiting'],
+    },
+    {
+      title: 'Full-Stack Integration',
+      skills: ['MERN Stack', 'Docker', 'CI/CD', 'AWS Basics'],
+      milestones: ['Build a full-stack MERN app', 'Dockerize the app', 'Set up CI/CD pipeline'],
+    },
+  ],
+  recommendedProjects: [
+    {
+      title: 'Personal Portfolio Website',
+      description: 'Build a responsive portfolio showcasing your projects and skills using React and Tailwind CSS.',
+      difficulty: 'Beginner',
+    },
+    {
+      title: 'Task Management App',
+      description: 'Create a full-stack CRUD app with user authentication, drag-and-drop, and a PostgreSQL database.',
+      difficulty: 'Intermediate',
+    },
+    {
+      title: 'Real-time Chat Application',
+      description: 'Build a WebSocket-based chat app with rooms, typing indicators, and message history.',
+      difficulty: 'Advanced',
+    },
+    {
+      title: 'E-commerce API',
+      description: 'Design and build a RESTful API for an e-commerce platform with cart, payments, and inventory.',
+      difficulty: 'Advanced',
+    },
+  ],
+  recommendedCertifications: [
+    {
+      name: 'AWS Certified Cloud Practitioner',
+      provider: 'Amazon Web Services',
+      relevance: 'Foundational cloud knowledge valued by employers hiring full-stack developers.',
+    },
+    {
+      name: 'Meta Front-End Developer Professional Certificate',
+      provider: 'Coursera / Meta',
+      relevance: 'Industry-recognized credential covering React, UI design, and frontend best practices.',
+    },
+    {
+      name: 'MongoDB Node.js Developer Path',
+      provider: 'MongoDB University',
+      relevance: 'Free certification proving proficiency with Node.js and NoSQL databases.',
+    },
+    {
+      name: 'freeCodeCamp Full Stack Certification',
       provider: 'freeCodeCamp',
-      type: 'Course',
-      duration: '40 hours',
-      level: 'Beginner',
-      url: 'https://www.freecodecamp.org',
-      free: true,
-    },
-    {
-      title: 'Node.js & Express — Full Guide',
-      provider: 'The Odin Project',
-      type: 'Course',
-      duration: '35 hours',
-      level: 'Intermediate',
-      url: 'https://www.theodinproject.com',
-      free: true,
-    },
-    {
-      title: 'Designing Data-Intensive Applications',
-      provider: 'Martin Kleppmann',
-      type: 'Book',
-      duration: 'Self-paced',
-      level: 'Advanced',
-      url: 'https://dataintensive.net',
-      free: false,
-    },
-    {
-      title: 'AWS Cloud Practitioner Essentials',
-      provider: 'AWS Skill Builder',
-      type: 'Course',
-      duration: '6 hours',
-      level: 'Beginner',
-      url: 'https://aws.amazon.com/training',
-      free: true,
-    },
-    {
-      title: 'TypeScript in 50 Lessons',
-      provider: 'Stefan Baumgartner',
-      type: 'Book',
-      duration: 'Self-paced',
-      level: 'Intermediate',
-      url: 'https://www.typescript-book.com',
-      free: false,
-    },
-    {
-      title: 'Build a Full-Stack MERN App',
-      provider: 'YouTube — Traversy Media',
-      type: 'Video',
-      duration: '3 hours',
-      level: 'Intermediate',
-      url: 'https://www.youtube.com',
-      free: true,
+      relevance: 'Comprehensive free certification covering frontend, backend, and responsive design.',
     },
   ],
-  alternativePaths: [
-    { title: 'Frontend Developer', match: 82 },
-    { title: 'Backend Developer', match: 74 },
-    { title: 'DevOps Engineer', match: 61 },
-    { title: 'Data Analyst', match: 55 },
-  ],
+  careerAdvice:
+    'Based on your strong foundation in JavaScript and problem-solving, a Full-Stack Software Engineer role is an excellent fit. Focus on mastering React and Node.js first — these form the backbone of modern web development. Build at least 3 portfolio projects that demonstrate full-stack capability. Contribute to open source to show collaboration skills. Practice system design fundamentals and prepare for technical interviews with daily coding challenges. The industry demand for full-stack developers is high and growing — with consistent effort over 6 months, you can be job-ready. Remember: the best time to start was yesterday, the next best time is today.',
 };
 
 // 6-month learning roadmap
