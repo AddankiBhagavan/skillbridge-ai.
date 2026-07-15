@@ -48,7 +48,7 @@ AI Generates:
 ## Live Demo
 https://skillbridge-ai-six.vercel.app
 ## GitHub Repository
-(https://github.com/AddankiBhagavan/skillbridge-ai.)
+https://github.com/AddankiBhagavan/skillbridge-ai-123
 
 ## Installation
 
