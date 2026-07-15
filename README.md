@@ -46,10 +46,10 @@ AI Generates:
 - Career Guidance
 
 ## Live Demo
-https://your-vercel-url.vercel.app
+https://skillbridge-jz683f24c-addanki-bhagavan.vercel.app
 
 ## GitHub Repository
-https://github.com/your-username/skillbridge-ai
+https://github.com/AddankiBhagavan/skillbridge-ai
 
 ## Installation
 
